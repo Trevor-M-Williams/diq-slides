@@ -56,9 +56,6 @@ function main() {
     } else if (e.key === 'ArrowLeft' && currentSlideIndex > 0) {
       e.preventDefault();
       currentSlideIndex--;
-    } else if (e.key === 'd') {
-      e.preventDefault();
-      downloadSlides();
     }
 
     slidesWrapper.style.transform = `translateX(${currentSlideIndex * -100}vw)`;
