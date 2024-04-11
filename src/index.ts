@@ -17,30 +17,19 @@ function main() {
 
   document.addEventListener('keydown', (e) => handleKeydown(e));
 
-  async function downloadSlides() {
-    const doc = new jsPDF({
-      orientation: 'landscape',
+  addDownloadButton();
+
+  function addDownloadButton() {
+    const url = 'https://slides-download-production.up.railway.app//generate';
+    const downloadButton = document.querySelector('.download-button') as HTMLButtonElement;
+    if (!downloadButton) return;
+
+    downloadButton.addEventListener('click', async () => {
+      downloadButton.disabled = true;
+      await fetch(url);
+      downloadButton.disabled = false;
     });
-
-    for (let i = 0; i < numSlides; i++) {
-      currentSlideIndex = i;
-      slidesWrapper.style.transform = `translateX(${i * -100}vw)`;
-      updateSlideNumber();
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      const slide = slides[i] as HTMLElement;
-
-      await html2canvas(slide).then((canvas) => {
-        const imgData = canvas.toDataURL('image/jpeg', 1.0);
-        if (i > 0) {
-          doc.addPage();
-        }
-        doc.addImage(imgData, 'JPEG', 10, 10, 280, 150);
-      });
-    }
-
-    slidesWrapper.style.transform = `translateX(${currentSlideIndex * -100}vw)`;
-    doc.save('slides.pdf');
+    document.body.appendChild(downloadButton);
   }
 
   function handleKeydown(e: KeyboardEvent) {
