@@ -28,7 +28,25 @@ function main() {
     downloadButton.addEventListener('click', async () => {
       console.log('Downloading...');
       downloadButton.disabled = true;
-      await fetch(url);
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Network response was not ok.');
+
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = 'slides.pdf';
+        document.body.appendChild(link);
+        link.click();
+
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error('Download failed', error);
+      }
+
       downloadButton.disabled = false;
     });
     console.log('Download button added');
