@@ -17,19 +17,21 @@ function main() {
 
   document.addEventListener('keydown', (e) => handleKeydown(e));
 
-  addDownloadButton();
+  initDownloadButton();
 
-  function addDownloadButton() {
+  function initDownloadButton() {
+    console.log('Adding download button');
     const url = 'https://slides-download-production.up.railway.app/generate';
     const downloadButton = document.querySelector('.download-button') as HTMLButtonElement;
     if (!downloadButton) return;
 
     downloadButton.addEventListener('click', async () => {
+      console.log('Downloading...');
       downloadButton.disabled = true;
       await fetch(url);
       downloadButton.disabled = false;
     });
-    document.body.appendChild(downloadButton);
+    console.log('Download button added');
   }
 
   function handleKeydown(e: KeyboardEvent) {
