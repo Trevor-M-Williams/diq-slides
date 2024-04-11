@@ -20,7 +20,7 @@ function main() {
   addDownloadButton();
 
   function addDownloadButton() {
-    const url = 'https://slides-download-production.up.railway.app//generate';
+    const url = 'https://slides-download-production.up.railway.app/generate';
     const downloadButton = document.querySelector('.download-button') as HTMLButtonElement;
     if (!downloadButton) return;
 
