@@ -15,6 +15,7 @@ function main() {
   document.addEventListener('keydown', (e) => handleKeydown(e));
 
   initDownloadButton();
+  initConfidentialityNotices();
   initSlideNumbers();
 
   function handleKeydown(e: KeyboardEvent) {
@@ -33,6 +34,18 @@ function main() {
     }
 
     slidesWrapper.style.transform = `translateX(${currentSlideIndex * -100}vw)`;
+  }
+
+  function initConfidentialityNotices() {
+    const placeholder = document.querySelector('.confidential');
+    if (placeholder) placeholder.remove();
+
+    slides.forEach((slide) => {
+      const notice = document.createElement('div');
+      notice.classList.add('confidential');
+      notice.textContent = '*Confidential information. Not for distribution.';
+      slide.appendChild(notice);
+    });
   }
 
   function initDownloadButton() {
