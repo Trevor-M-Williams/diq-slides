@@ -15,6 +15,25 @@ function main() {
   document.addEventListener('keydown', (e) => handleKeydown(e));
 
   initDownloadButton();
+  initSlideNumbers();
+
+  function handleKeydown(e: KeyboardEvent) {
+    // override tabs behavior
+    setTimeout(() => {
+      const activeElement = document.activeElement as HTMLElement;
+      if (activeElement) activeElement.blur();
+    }, 0);
+
+    if (e.key === 'ArrowRight' && currentSlideIndex < numSlides - 1) {
+      e.preventDefault();
+      currentSlideIndex++;
+    } else if (e.key === 'ArrowLeft' && currentSlideIndex > 0) {
+      e.preventDefault();
+      currentSlideIndex--;
+    }
+
+    slidesWrapper.style.transform = `translateX(${currentSlideIndex * -100}vw)`;
+  }
 
   function initDownloadButton() {
     console.log('Adding download button');
@@ -49,29 +68,15 @@ function main() {
     console.log('Download button added');
   }
 
-  function handleKeydown(e: KeyboardEvent) {
-    // override tabs behavior
-    setTimeout(() => {
-      const activeElement = document.activeElement as HTMLElement;
-      if (activeElement) activeElement.blur();
-    }, 0);
+  function initSlideNumbers() {
+    const placeholder = document.querySelector('.slide-number');
+    if (placeholder) placeholder.remove();
 
-    if (e.key === 'ArrowRight' && currentSlideIndex < numSlides - 1) {
-      e.preventDefault();
-      currentSlideIndex++;
-    } else if (e.key === 'ArrowLeft' && currentSlideIndex > 0) {
-      e.preventDefault();
-      currentSlideIndex--;
-    }
-
-    slidesWrapper.style.transform = `translateX(${currentSlideIndex * -100}vw)`;
-    updateSlideNumber();
-  }
-
-  function updateSlideNumber() {
-    const slideNumberElement = document.querySelector('[data-DIQ="slide-number"]') as HTMLElement;
-    if (slideNumberElement) {
-      slideNumberElement.textContent = (currentSlideIndex + 1).toString();
-    }
+    slides.forEach((slide, index) => {
+      const slideNumber = document.createElement('div');
+      slideNumber.classList.add('slide-number');
+      slideNumber.textContent = `${index + 1}`;
+      slide.appendChild(slideNumber);
+    });
   }
 }
