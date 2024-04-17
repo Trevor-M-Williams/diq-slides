@@ -53,11 +53,14 @@ function main() {
     console.log('Adding download button');
     const url = 'https://slides-download-production.up.railway.app/generate';
     const downloadButton = document.querySelector('.download-button') as HTMLButtonElement;
+    const spinner = document.querySelector('.spinner') as HTMLElement;
     if (!downloadButton) return;
 
     downloadButton.addEventListener('click', async () => {
       console.log('Downloading...');
       downloadButton.disabled = true;
+      downloadButton.style.opacity = '0';
+      spinner.style.display = 'block';
 
       try {
         const response = await fetch(url);
@@ -73,6 +76,9 @@ function main() {
 
         window.URL.revokeObjectURL(blobUrl);
         document.body.removeChild(link);
+
+        spinner.style.display = 'none';
+        downloadButton.style.opacity = '1';
       } catch (error) {
         console.error('Download failed', error);
       }
