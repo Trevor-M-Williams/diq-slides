@@ -16,6 +16,7 @@ function main() {
 
   initDownloadButton();
   initConfidentialityNotices();
+  initSlideButtons();
   initSlideNumbers();
 
   function handleKeydown(e: KeyboardEvent) {
@@ -79,6 +80,22 @@ function main() {
       downloadButton.disabled = false;
     });
     console.log('Download button added');
+  }
+
+  function initSlideButtons() {
+    const slideButtons = document.querySelectorAll('.slide-button');
+    const prevButton = slideButtons[0] as HTMLButtonElement;
+    const nextButton = slideButtons[1] as HTMLButtonElement;
+
+    prevButton.addEventListener('click', () => {
+      if (currentSlideIndex > 0) currentSlideIndex--;
+      slidesWrapper.style.transform = `translateX(${currentSlideIndex * -100}vw)`;
+    });
+
+    nextButton.addEventListener('click', () => {
+      if (currentSlideIndex < numSlides - 1) currentSlideIndex++;
+      slidesWrapper.style.transform = `translateX(${currentSlideIndex * -100}vw)`;
+    });
   }
 
   function initSlideNumbers() {
